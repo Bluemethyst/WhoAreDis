@@ -11,13 +11,34 @@ class Utils(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @nextcord.slash_command(description="List all available slash commands")
+    async def help(self, interaction: nextcord.Interaction):
+        commands_list = []
+        for command in nextcord.Client.get_all_application_commands(self.bot):
+            if isinstance(command, nextcord.SlashApplicationCommand):
+                commands_list.append(f"{command.get_mention()}: {command.description}")
+
+        commands_string = "\n".join(commands_list)
+        embed = nextcord.Embed(title="Help Menu", color=0x06E5C3)
+        embed.add_field(name="Commands", value=commands_string, inline=False)
+        embed.add_field(
+            name="Info",
+            value="""Hosted on an OVH VPS, written in Python using the Nextcord wrapper\n
+            [Github](<https://github.com/Bluemethyst/WhoAreDis>)\n
+            [Support Server](<https://discord.gg/Sc6Es7QnhH>)\n
+            [Website](<https://bluemethyst.dev/>)""",
+            inline=False,
+        )
+        await interaction.response.send_message(embed=embed)
+        log.info(command="List Commands", interaction=interaction)
+
     # PING
     @nextcord.slash_command(
         description="Get the latency from the bot to Discords servers"
     )
     async def ping(self, interaction: nextcord.Interaction):
         latency = round(self.bot.latency * 1000, 0)
-        embed = nextcord.Embed(title=f"Latency: {latency}MS", color=0x3346D1)
+        embed = nextcord.Embed(title=f"Latency: {latency}MS", color=0x06E5C3)
         await interaction.response.send_message(embed=embed)
         log.info(command="Ping", interaction=interaction)
 
@@ -39,10 +60,10 @@ class Utils(commands.Cog):
         bot_start_time = shared_data.get_bot_start_time()
         unix_timestamp = int(bot_start_time.timestamp())
 
-        embed = nextcord.Embed(title="Info", color=0x3346D1)
+        embed = nextcord.Embed(title="Info", color=0x06E5C3)
         embed.add_field(
-            name="Bot",
-            value="Written in Python using the Nextcord wrapper for Discord.py and hosted on an OVH VPS\n[Source](https://github.com/Bluemethyst/Gitmethyst)",
+            name=f"Bot ({round(self.bot.latency * 1000, 0)}MS)",
+            value="Written in Python using the Nextcord wrapper and hosted on an OVH VPS\n[Source](<https://github.com/Bluemethyst/WhoAreDis>)",
         )
         embed.add_field(name="CPU", value=f"{cpu_name}\n{cpu.real}% in use")
         embed.add_field(name="Architecture", value=architecture)

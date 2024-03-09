@@ -1,5 +1,4 @@
 # shared_data.py
-import datetime
 
 API = "https://discordlookup.mesavirep.xyz/v1/"
 

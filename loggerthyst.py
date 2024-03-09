@@ -19,7 +19,6 @@ def info(
     """
     now = datetime.now()
     log_filename = f"{now.date()}.log"
-    log_entry = ""
     if interaction and command:
         log_entry = (
             f"[INFO | {now.strftime('%Y-%m-%d %H:%M:%S')}] "

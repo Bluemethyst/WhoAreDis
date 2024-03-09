@@ -1,10 +1,10 @@
 import httpx
 import nextcord
+from nextcord.ext import commands
+
 import loggerthyst as log
-from datetime import datetime
 from utils.funcs import get_most_common_color
 from utils.shared_data import API
-from nextcord.ext import commands
 
 
 class GuildCmds(commands.Cog):
